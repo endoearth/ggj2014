@@ -33,14 +33,13 @@ public class Enemy : MonoBehaviour
 
 	void OnCollisionEnter2D(Collision2D col)
 	{
-		Vector2 point = col.contacts[0].point;
-		Vector2 pos = new Vector2(transform.position.x,transform.position.y);
+		Vector2 norm = col.contacts[0].normal;
 
-		if(Mathf.Abs(point.x-pos.x) > Mathf.Abs(point.y-pos.y)+0.1f)
+		if(Mathf.Abs (norm.x) > 0.1f)
 		{
 			ChangeDirection();
 		}
-		else if(point.y > pos.y)
+		else if(norm.y<-0.1f)
 		{
 			Die();
 			col.collider.rigidbody2D.velocity += Vector2.up * 5f;
