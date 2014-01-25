@@ -19,9 +19,7 @@ public class CameraMovement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
-		//Vector2 _position = gameObject.transform.position;
-
+		
 		if(player)
 		{
 			targetPosition.x = Merge(gameObject.transform.position.x, player.transform.position.x);
