@@ -16,15 +16,15 @@ public class PlayerControl : MonoBehaviour
 		float forwardAmt = 0f;
 		bool jump = false;
 
-		if(Input.GetKey(KeyCode.LeftArrow))
+		if(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A) )
 		{
 			forwardAmt -= 1f;
 		}
-		if(Input.GetKey (KeyCode.RightArrow))
+		if(Input.GetKey (KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
 		{
 			forwardAmt += 1f;
 		}
-		if(Input.GetKeyDown (KeyCode.UpArrow))
+		if(Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKey(KeyCode.Space))
 		{
 			jump = true;
 		}
