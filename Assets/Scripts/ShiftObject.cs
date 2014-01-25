@@ -2,14 +2,112 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class ShiftObject : MonoBehaviour
+
+
+
+public abstract class ShiftObject : MonoBehaviour
 {
-
-
-	public virtual void OnShift(Perspective perspective)
+	[System.Serializable]
+	public abstract class SwappableObject
 	{
+		public Perspective perspective;
+		
+		public abstract void Swap(bool on, ShiftObject shifter);
+	}
+
+
+	private static List<ShiftObject> _allObjects = new List<ShiftObject>();
+	
+	private static float _lastTimeSwapped = 0f;
+
+
+	protected List<SwappableObject> _swaps = new List<SwappableObject>();
+
+	protected SwappableObject _currentSwap = null;
+
+	public SwappableObject currentSwap
+	{
+		get { return _currentSwap; }
 	}
 
 
 
+	void Awake()
+	{
+		_allObjects.Add(this);
+
+		CopyToSwaps();
+	}
+
+	void Start()
+	{
+		SetDefaultSwap();
+	}
+
+	void OnDestroy()
+	{
+		_allObjects.Remove(this);
+	}
+	
+
+
+	public static void  ShiftAllTo(Perspective perspective)
+	{
+		if(Time.time-_lastTimeSwapped >= 0.75f)
+		{
+			foreach(ShiftObject shiftObj in _allObjects)
+			{
+				shiftObj.OnShift(perspective);
+			}
+			_lastTimeSwapped = Time.time;
+		}
+	}
+
+
+
+	protected abstract void CopyToSwaps();
+
+	protected abstract void SetDefaultSwap();
+
+
+
+
+	public void OnShift(Perspective perspective)
+	{
+		foreach(SwappableObject swap in _swaps)
+		{
+			if(swap.perspective==perspective)
+			{
+				SetActiveSwap(swap);
+				return;
+			}
+		}
+			
+		SetDefaultSwap();
+	}
+
+	protected void SetActiveSwap(SwappableObject swap)
+	{
+
+		if(swap==_currentSwap)
+		{
+			return;
+		}
+		
+		if(_currentSwap!=null)
+		{
+			_currentSwap.Swap(false,this);
+		}
+		
+		_currentSwap = swap;
+		
+		if(_currentSwap!=null)
+		{
+			_currentSwap.Swap(true,this);
+		}
+	}
+
+
 }
+
+

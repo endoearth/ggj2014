@@ -8,7 +8,9 @@ public class PlayerControl : MonoBehaviour
 	public float forwardAccel = 10f;
 	public float backwardAccel = 20f;
 
-	private float _speed = 0f;
+	private float _speed = 0f; 
+
+
 
 
 	void Update()
@@ -27,6 +29,19 @@ public class PlayerControl : MonoBehaviour
 		if(Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKey(KeyCode.Space))
 		{
 			jump = true;
+		}
+
+		if(Input.GetKeyDown(KeyCode.Alpha1))
+		{
+			ShiftObject.ShiftAllTo(Perspective.Default);
+		}
+		if(Input.GetKeyDown(KeyCode.Alpha2))
+		{
+			ShiftObject.ShiftAllTo(Perspective.Pessimistic);
+		}
+		if(Input.GetKeyDown(KeyCode.Alpha3))
+		{
+			ShiftObject.ShiftAllTo(Perspective.Optimistic);
 		}
 
 
