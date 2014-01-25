@@ -67,8 +67,16 @@ public abstract class ShiftObject : MonoBehaviour
 
 	protected abstract void CopyToSwaps();
 
-	protected abstract void SetDefaultSwap();
-
+	protected abstract SwappableObject _defaultSwap
+	{
+		get;
+	}
+	
+	
+	private void SetDefaultSwap()
+	{
+		SetActiveSwap(_defaultSwap);
+	}
 
 
 

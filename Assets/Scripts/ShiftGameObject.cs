@@ -19,11 +19,13 @@ public class ShiftGameObject : ShiftObject
 		}
 	}
 
-
-
 	public SwappableGameObject defaultSwap;
 	public List<SwappableGameObject> swaps = new List<SwappableGameObject>();
 
+	protected override SwappableObject _defaultSwap
+	{
+		get { return defaultSwap; }
+	}
 
 
 	protected override void CopyToSwaps()
@@ -32,11 +34,6 @@ public class ShiftGameObject : ShiftObject
 		{
 			_swaps.Add(swap);
 		}
-	}
-
-	protected override void SetDefaultSwap()
-	{
-		SetActiveSwap(defaultSwap);
 	}
 
 

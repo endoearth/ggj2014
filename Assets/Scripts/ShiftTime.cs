@@ -3,26 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-public class ShiftCollider2D : ShiftObject
+public class ShiftTime : ShiftObject
 {
 	[System.Serializable]
-	public class SwappableCollider2D : ShiftObject.SwappableObject
+	public class SwappableTimeScale : SwappableObject
 	{
-		public Collider2D col;
+		public float timeScale;
 		
 		public override void Swap(bool on, ShiftObject shifter)
 		{
-			if(col!=null)
+			if(on)
 			{
-				col.enabled = on;
+				Time.timeScale = timeScale;
 			}
 		}
 	}
 
-
-
-	public SwappableCollider2D defaultSwap;
-	public List<SwappableCollider2D> swaps = new List<SwappableCollider2D>();
+	public SwappableTimeScale defaultSwap;
+	public List<SwappableTimeScale> swaps = new List<SwappableTimeScale>();
 
 	protected override SwappableObject _defaultSwap
 	{
@@ -31,12 +29,11 @@ public class ShiftCollider2D : ShiftObject
 
 	protected override void CopyToSwaps()
 	{
-		foreach(SwappableCollider2D swap in swaps)
+		foreach(SwappableTimeScale swap in swaps)
 		{
 			_swaps.Add(swap);
 		}
 	}
-
 
 
 }

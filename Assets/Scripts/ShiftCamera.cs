@@ -19,8 +19,6 @@ public class ShiftCamera : ShiftObject
 		}
 	}
 
-
-
 	public SwappableCamera defaultSwap;
 	public List<SwappableCamera> swaps = new List<SwappableCamera>();
 
@@ -35,9 +33,9 @@ public class ShiftCamera : ShiftObject
 		}
 	}
 	
-	protected override void SetDefaultSwap()
+	protected override SwappableObject _defaultSwap
 	{
-		SetActiveSwap(defaultSwap);
+		get { return defaultSwap; }
 	}
 
 
