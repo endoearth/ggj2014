@@ -35,7 +35,11 @@ public class Enemy : MonoBehaviour
 	{
 		Vector2 norm = col.contacts[0].normal;
 
-		if(Mathf.Abs (norm.x) > 0.1f)
+		Vector2 point = col.contacts[0].point;
+		Vector2 pos = transform.position;
+		Vector2 dif = point - pos;
+
+		if(Mathf.Abs (norm.x) > 0.1f && dif.y > Mathf.Abs(dif.x))
 		{
 			if(col.gameObject.tag=="Player")
 			{
@@ -48,7 +52,7 @@ public class Enemy : MonoBehaviour
 				transform.position += rigidbody2D.velocity.x * Vector3.right * Time.deltaTime;
 			}
 		}
-		else if(norm.y<-0.1f)
+		else 
 		{
 			if(col.collider.tag=="Player")
 			{
