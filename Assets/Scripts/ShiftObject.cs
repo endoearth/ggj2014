@@ -61,14 +61,15 @@ public abstract class ShiftObject : MonoBehaviour
 
 	public static void  ShiftAllTo(Perspective perspective)
 	{
-		_currentPerspective = perspective;
-
 		if(Time.time-_lastTimeSwapped >= 0.75f)
 		{
 			foreach(ShiftObject shiftObj in _allObjects)
 			{
 				shiftObj.OnShift(perspective);
 			}
+
+			_currentPerspective = perspective;
+
 			_lastTimeSwapped = Time.time;
 		}
 	}

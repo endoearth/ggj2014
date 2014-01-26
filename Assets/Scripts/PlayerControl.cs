@@ -118,6 +118,20 @@ public class PlayerControl : MonoBehaviour
 			ShiftObject.ShiftAllTo(Perspective.Optimistic);
 		}
 
+		if(Input.GetButtonDown("change"))
+		{
+
+			if(ShiftObject.currentPerspective == Perspective.Optimistic)
+			{
+				ShiftObject.ShiftAllTo(Perspective.Pessimistic);
+			} else if(ShiftObject.currentPerspective == Perspective.Pessimistic)
+			{
+				ShiftObject.ShiftAllTo(Perspective.Optimistic);
+			} else {
+				ShiftObject.ShiftAllTo(Perspective.Pessimistic);
+			}
+		}
+
 
 		float accel = forwardAccel;
 
