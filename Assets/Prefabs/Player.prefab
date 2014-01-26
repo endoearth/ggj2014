@@ -28,8 +28,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.22987843, y: 3.12457728, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -26.1578579, y: -77.6562195, z: 0}
+  m_LocalScale: {x: .778869867, y: .778869867, z: .778869867}
   m_Children: []
   m_Father: {fileID: 0}
 --- !u!50 &5000000
@@ -89,6 +89,8 @@ MonoBehaviour:
   floorType:
     serializedVersion: 2
     m_Bits: 0
+  globalZoom: 0
+  cameraController: {fileID: 0}
   anim: {fileID: 9500000}
 --- !u!114 &11400002
 MonoBehaviour:
