@@ -10,13 +10,33 @@ public class PlayerControl : MonoBehaviour
 
 	private float _speed = 0f; 
 
+	bool facingRight = true;
 
+	public Animator anim;
 
+	void Awake()
+	{
+		anim = GetComponent<Animator>();
+	}
 
 	void Update()
 	{
 		float forwardAmt = 0f;
 		bool jump = false;
+
+		anim.SetFloat("xSpeed", Mathf.Abs(rigidbody2D.velocity.x));
+
+		float xVelocity =  rigidbody2D.velocity.x;
+
+		//bool fliped = false;
+
+		if(xVelocity < 0 && facingRight)
+		{
+			Flip();
+		} else if (xVelocity > 0 && !facingRight){
+			Flip();
+		}
+
 
 		if(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A) )
 		{
@@ -63,6 +83,17 @@ public class PlayerControl : MonoBehaviour
 		}
 
 		rigidbody2D.velocity = movement;
+	}
+
+	void Flip()
+	{
+		Vector2 newScale = gameObject.transform.localScale;
+
+		facingRight = !facingRight;
+		
+		newScale.x *= -1;
+		
+		gameObject.transform.localScale = newScale;
 	}
 
 }
