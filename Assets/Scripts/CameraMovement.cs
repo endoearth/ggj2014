@@ -46,7 +46,7 @@ public class CameraMovement : MonoBehaviour {
 
 	void zoomIn ()
 	{
-		Camera[] cams = GetComponentsInChildren<Camera>();
+		Camera[] cams = GetComponentsInChildren<Camera>(true);
 
 		for(int i =0; i < cams.Length ;i++)
 		{
@@ -76,7 +76,7 @@ public class CameraMovement : MonoBehaviour {
 
 	void zoomOut ()
 	{
-		Camera[] cams = GetComponentsInChildren<Camera>();
+		Camera[] cams = GetComponentsInChildren<Camera>(true);
 
 		for(int i =0; i < cams.Length ;i++)
 		{
@@ -144,7 +144,7 @@ public class CameraMovement : MonoBehaviour {
 		//playerGradual.y = Mathf.MoveTowards(playerCurrent.y, playerTargetSize.y, Time.deltaTime);
 		
 		//foreach( Camera c in GetComponentsInChildren<Camera>() )
-		Camera[] cams = GetComponentsInChildren<Camera>();
+		Camera[] cams = GetComponentsInChildren<Camera>(true);
 
 		for(int i =0; i < cams.Length ;i++)
 		{
