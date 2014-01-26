@@ -100,7 +100,7 @@ public class CameraMovement : MonoBehaviour {
 			
 			//Debug.Log (playerGradual);
 			
-			player.transform.localScale = playerGradual;
+			//player.transform.localScale = playerGradual;
 		}
 	}
 	
