@@ -39,7 +39,7 @@ public abstract class ShiftObject : MonoBehaviour
 		CopyToSwaps();
 	}
 
-	void Start()
+	protected virtual void Start()
 	{
 		SetDefaultSwap();
 	}

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerControl : MonoBehaviour
 {
@@ -10,11 +11,10 @@ public class PlayerControl : MonoBehaviour
 
 	private float _speed = 0f; 
 	
-	
-	private int _groundedCount = 0;
+
 	public bool grounded
 	{
-		get { return _groundedCount > 0; }
+		get { return contacts.Count > 0; }
 	}
 
 
@@ -100,23 +100,43 @@ public class PlayerControl : MonoBehaviour
 		}
 	}
 
+	private List<Collider2D> contacts = new List<Collider2D>();
+
 	void OnCollisionEnter2D(Collision2D col)
 	{
 		foreach(ContactPoint2D cp in col.contacts)
 		{
 			if(cp.normal.y > 0.1f)
 			{
-				_groundedCount++;
+				if(!contacts.Contains(cp.collider))
+				{
+					contacts.Add(cp.collider);
+				}
 			}
 		}
 	}
+	
+	void OnCollisionStay2D(Collision2D col)
+	{
+		foreach(ContactPoint2D cp in col.contacts)
+		{
+			if(cp.normal.y <= 0.1f)
+			{
+				if(contacts.Contains(cp.collider))
+				{
+					contacts.Remove(cp.collider);
+				}
+			}
+		}
+	}
+
 	void OnCollisionExit2D(Collision2D col)
 	{
 		foreach(ContactPoint2D cp in col.contacts)
 		{
-			if(cp.normal.y > 0.1f)
+			if(contacts.Contains(cp.collider))
 			{
-				_groundedCount--;
+				contacts.Remove(cp.collider);
 			}
 		}
 	}
