@@ -9,7 +9,13 @@ public class PlayerControl : MonoBehaviour
 	public float backwardAccel = 20f;
 
 	private float _speed = 0f; 
-
+	
+	
+	private int _groundedCount = 0;
+	public bool grounded
+	{
+		get { return _groundedCount > 0; }
+	}
 
 
 
@@ -45,24 +51,74 @@ public class PlayerControl : MonoBehaviour
 		}
 
 
+		float accel = forwardAccel;
+
+
 		if(Mathf.Sign(_speed)==Mathf.Sign(forwardAmt))
 		{
-			_speed = Mathf.MoveTowards(_speed,forwardAmt*maxSpeed,Time.deltaTime * forwardAccel);
+			accel = forwardAccel;
 		}
 		else
 		{
-			_speed = Mathf.MoveTowards(_speed,forwardAmt*maxSpeed,Time.deltaTime * backwardAccel);
+			accel = backwardAccel;
+		}
+
+		if(!grounded)
+		{
+			accel *= 0.25f;
+		}
+
+		_speed = rigidbody2D.velocity.x;
+
+		//if(grounded || forwardAmt!=0f)
+		{
+			_speed = Mathf.MoveTowards(_speed,forwardAmt*maxSpeed,Time.deltaTime * accel);
 		}
 
 
 		Vector2 movement = new Vector2(_speed,rigidbody2D.velocity.y);
 
+		rigidbody2D.velocity = movement;
+
 		if(jump)
 		{
-			movement.y = 7f;
+			StartCoroutine(TryJump(10));
 		}
+	}
 
-		rigidbody2D.velocity = movement;
+	private IEnumerator TryJump(int frames)
+	{
+		while(frames > 0)
+		{
+			if(grounded)
+			{
+				rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 7f);
+				yield break;
+			}
+			frames--;
+			yield return null;
+		}
+	}
+
+	void OnCollisionEnter2D(Collision2D col)
+	{
+		foreach(ContactPoint2D cp in col.contacts)
+		{
+			if(cp.normal.y > 0.1f)
+			{
+				_groundedCount++;
+			}
+		}
+	}
+	void OnCollisionExit2D(Collision2D col)
+	{
+		foreach(ContactPoint2D cp in col.contacts)
+		{
+			if(cp.normal.y > 0.1f)
+			{
+				_groundedCount--;
+			}
+		}
 	}
 
 }

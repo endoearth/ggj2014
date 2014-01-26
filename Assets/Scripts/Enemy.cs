@@ -41,7 +41,7 @@ public class Enemy : MonoBehaviour
 		}
 		else if(norm.y<-0.1f)
 		{
-			Die();
+			Invoke ("Die",0.02f);
 			col.collider.rigidbody2D.velocity += Vector2.up * 5f;
 		}
 	}
@@ -51,11 +51,23 @@ public class Enemy : MonoBehaviour
 	void ChangeDirection()
 	{
 		_goingRight = !_goingRight;
+
+		if(_goingRight)
+		{
+		//	transform.localScale = new Vector3(-1,1,1);
+		}
+		else
+		{
+		//	transform.localScale = new Vector3(1,1,1);
+		}
 	}
 
 	void Die()
 	{
-		Destroy(gameObject);
+		collider2D.enabled = false;
+		rigidbody2D.fixedAngle = false;
+		rigidbody2D.AddTorque(50f);
+		Destroy (gameObject,3f);
 	}
 
 }
