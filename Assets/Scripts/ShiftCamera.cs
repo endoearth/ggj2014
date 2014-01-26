@@ -19,6 +19,8 @@ public class ShiftCamera : ShiftObject
 		}
 	}
 
+	public static ShiftCamera main = null;
+
 	public SwappableCamera defaultSwap;
 	public List<SwappableCamera> swaps = new List<SwappableCamera>();
 
@@ -36,6 +38,14 @@ public class ShiftCamera : ShiftObject
 	protected override SwappableObject _defaultSwap
 	{
 		get { return defaultSwap; }
+	}
+
+
+	protected override void Start()
+	{
+		main = this;
+
+		base.Start();
 	}
 
 
@@ -92,6 +102,39 @@ public class ShiftCamera : ShiftObject
 		_currentCam = nextSwap;
 
 		_swapping = false;
+	}
+
+	public void DoDeathAnimation()
+	{
+		if(ShiftObject.currentPerspective==Perspective.Optimistic)
+		{
+			StartCoroutine(DoOptimisticAnimation());
+		}
+		if(ShiftObject.currentPerspective==Perspective.Pessimistic)
+		{
+			StartCoroutine(DoPessimisticAnimation());
+		}
+	}
+
+	public IEnumerator DoOptimisticAnimation()
+	{
+		float t = 0f;
+
+		while(t<1f)
+		{
+			Debug.Log (t);
+			t = Mathf.MoveTowards(t,1f,Time.deltaTime);
+
+			_currentCam.camera.gameObject.GetComponent<Bloom>().bloomIntensity = Mathf.Lerp(1f,10f,t);
+			_currentCam.camera.gameObject.GetComponent<Bloom>().bloomThreshhold = Mathf.Lerp(0.5f,0f,t);
+
+			yield return null;
+		}
+	}
+	
+	public IEnumerator DoPessimisticAnimation()
+	{
+		yield break;
 	}
 
 }

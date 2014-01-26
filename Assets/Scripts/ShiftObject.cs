@@ -16,6 +16,8 @@ public abstract class ShiftObject : MonoBehaviour
 	}
 
 
+	private static Perspective _currentPerspective = Perspective.Default;
+
 	private static List<ShiftObject> _allObjects = new List<ShiftObject>();
 	
 	private static float _lastTimeSwapped = 0f;
@@ -28,6 +30,12 @@ public abstract class ShiftObject : MonoBehaviour
 	public SwappableObject currentSwap
 	{
 		get { return _currentSwap; }
+	}
+
+
+	public static Perspective currentPerspective
+	{
+		get { return _currentPerspective; }
 	}
 
 
@@ -53,6 +61,8 @@ public abstract class ShiftObject : MonoBehaviour
 
 	public static void  ShiftAllTo(Perspective perspective)
 	{
+		_currentPerspective = perspective;
+
 		if(Time.time-_lastTimeSwapped >= 0.75f)
 		{
 			foreach(ShiftObject shiftObj in _allObjects)

@@ -37,12 +37,23 @@ public class Enemy : MonoBehaviour
 
 		if(Mathf.Abs (norm.x) > 0.1f)
 		{
-			ChangeDirection();
+			if(col.gameObject.tag=="Player")
+			{
+				col.gameObject.SendMessage("Die");
+			}
+			else
+			{
+				ChangeDirection();
+			}
 		}
 		else if(norm.y<-0.1f)
 		{
 			Invoke ("Die",0.02f);
-			col.collider.rigidbody2D.velocity += Vector2.up * 5f;
+
+			if(col.collider.tag=="Player")
+			{
+				col.collider.rigidbody2D.velocity += Vector2.up * 5f;
+			}
 		}
 	}
 
