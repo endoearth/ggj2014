@@ -13,7 +13,7 @@ public class CameraMovement : MonoBehaviour {
 
 	Vector2 playerTargetSize;
 
-	private bool _worldSwitch = false;
+	private bool _worldSwitch = true;
 
 	float originalCameraSize;
 

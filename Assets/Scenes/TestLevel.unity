@@ -9641,6 +9641,8 @@ MonoBehaviour:
   floorType:
     serializedVersion: 2
     m_Bits: 0
+  globalZoom: 0
+  cameraController: {fileID: 1584434513}
   anim: {fileID: 1297059438}
 --- !u!58 &1297059435
 CircleCollider2D:
@@ -10199,6 +10201,10 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 353502e55046a47d190a80aa64261496, type: 2}
+      propertyPath: cameraController
+      value: 
+      objectReference: {fileID: 1584434513}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 353502e55046a47d190a80aa64261496, type: 2}
   m_RootGameObject: {fileID: 1297059432}
@@ -10597,7 +10603,7 @@ GameObject:
   - 114: {fileID: 1429036312}
   m_Layer: 19
   m_Name: DisappearingBlock
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15109,7 +15115,7 @@ GameObject:
   - 114: {fileID: 2048806735}
   m_Layer: 19
   m_Name: DisappearingBlock
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
