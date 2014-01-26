@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &100002
 GameObject:
   m_ObjectHideFlags: 0
@@ -30,7 +30,6 @@ GameObject:
   - 20: {fileID: 2000002}
   - 92: {fileID: 9200002}
   - 124: {fileID: 12400002}
-  - 81: {fileID: 8100000}
   m_Layer: 0
   m_Name: DefaultCamera
   m_TagString: MainCamera
@@ -56,7 +55,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &100006
 GameObject:
   m_ObjectHideFlags: 0
@@ -67,6 +66,7 @@ GameObject:
   - 4: {fileID: 400006}
   - 114: {fileID: 11400006}
   - 114: {fileID: 11400002}
+  - 81: {fileID: 8100000}
   m_Layer: 0
   m_Name: CameraRig
   m_TagString: Untagged
@@ -148,7 +148,7 @@ Camera:
     m_Bits: 4294795263
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
-  m_HDR: 1
+  m_HDR: 0
   m_OcclusionCulling: 1
 --- !u!20 &2000002
 Camera:
@@ -206,14 +206,14 @@ Camera:
     m_Bits: 4294877183
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
-  m_HDR: 1
+  m_HDR: 0
   m_OcclusionCulling: 1
 --- !u!81 &8100000
 AudioListener:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100002}
+  m_GameObject: {fileID: 100006}
   m_Enabled: 1
 --- !u!92 &9200000
 Behaviour:
@@ -253,7 +253,7 @@ MonoBehaviour:
   sepBlurSpread: 4.92999983
   quality: 1
   bloomIntensity: 1
-  bloomThreshhold: .460000008
+  bloomThreshhold: .5
   bloomThreshholdColor: {r: 1, g: 1, b: 1, a: 1}
   bloomBlurIterations: 2
   hollywoodFlareBlurIterations: 2
