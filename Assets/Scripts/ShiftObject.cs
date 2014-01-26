@@ -25,6 +25,8 @@ public abstract class ShiftObject : MonoBehaviour
 
 	protected SwappableObject _currentSwap = null;
 
+	public static Perspective currentPerspective; 
+
 	public SwappableObject currentSwap
 	{
 		get { return _currentSwap; }
@@ -53,12 +55,16 @@ public abstract class ShiftObject : MonoBehaviour
 
 	public static void  ShiftAllTo(Perspective perspective)
 	{
+
 		if(Time.time-_lastTimeSwapped >= 0.75f)
 		{
 			foreach(ShiftObject shiftObj in _allObjects)
 			{
 				shiftObj.OnShift(perspective);
 			}
+
+			currentPerspective = perspective;
+
 			_lastTimeSwapped = Time.time;
 		}
 	}
