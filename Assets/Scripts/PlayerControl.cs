@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
 public class PlayerControl : MonoBehaviour
 {
@@ -10,11 +9,12 @@ public class PlayerControl : MonoBehaviour
 	public float backwardAccel = 20f;
 
 	private float _speed = 0f; 
-
-	bool facingRight = true;
+	private bool facingRight = true;
+	
+	private int _groundedCount = 0;
 	public bool grounded
 	{
-		get { return contacts.Count > 0; }
+		get { return _groundedCount > 0; }
 	}
 
 	public Animator anim;
@@ -26,16 +26,6 @@ public class PlayerControl : MonoBehaviour
 
 	void Update()
 	{
-
-		for(int i=0;i<contacts.Count;i++)
-		{
-			if(contacts[i]==null)
-			{
-				contacts.RemoveAt(i);
-				break;
-			}
-		}
-
 		float forwardAmt = 0f;
 		bool jump = false;
 
@@ -61,22 +51,10 @@ public class PlayerControl : MonoBehaviour
 		{
 			forwardAmt += 1f;
 		}
-		if(Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKey(KeyCode.Space))
+		if(Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space))
 		{
 			jump = true;
 		}
-
-		if(forwardAmt==0f)
-		{
-			forwardAmt += Input.GetAxis("Horizontal");
-		}
-
-		if(Input.GetButtonDown("Jump"))
-		{
-			jump = true;
-		}
-
-
 
 		if(Input.GetKeyDown(KeyCode.Alpha1))
 		{
@@ -94,11 +72,8 @@ public class PlayerControl : MonoBehaviour
 
 		float accel = forwardAccel;
 
-		if(!grounded)
-		{
-			accel = forwardAccel * 0.25f;
-		}
-		else if(Mathf.Sign(_speed)==Mathf.Sign(forwardAmt))
+
+		if(Mathf.Sign(_speed)==Mathf.Sign(forwardAmt))
 		{
 			accel = forwardAccel;
 		}
@@ -107,9 +82,14 @@ public class PlayerControl : MonoBehaviour
 			accel = backwardAccel;
 		}
 
+		if(!grounded)
+		{
+			accel *= 0.25f;
+		}
+
 		_speed = rigidbody2D.velocity.x;
 
-		if(grounded || forwardAmt!=0f)
+		//if(grounded || forwardAmt!=0f)
 		{
 			_speed = Mathf.MoveTowards(_speed,forwardAmt*maxSpeed,Time.deltaTime * accel);
 		}
@@ -118,7 +98,6 @@ public class PlayerControl : MonoBehaviour
 		Vector2 movement = new Vector2(_speed,rigidbody2D.velocity.y);
 
 		rigidbody2D.velocity = movement;
-
 
 		if(jump)
 		{
@@ -140,56 +119,39 @@ public class PlayerControl : MonoBehaviour
 		}
 	}
 
-	private List<Collider2D> contacts = new List<Collider2D>();
-
 	void OnCollisionEnter2D(Collision2D col)
 	{
 		foreach(ContactPoint2D cp in col.contacts)
 		{
-			if(cp.normal.y > 0.1f && cp.collider.tag == "Untagged")
+			if(cp.normal.y > 0.1f)
 			{
-				if(!contacts.Contains(cp.collider))
-				{
-					contacts.Add(cp.collider);
-				}
+				_groundedCount++;
 			}
 		}
 	}
-	
-	void OnCollisionStay2D(Collision2D col)
-	{
-		foreach(ContactPoint2D cp in col.contacts)
-		{
-			if(cp.normal.y < 0.1f)
-			{
-				if(contacts.Contains(cp.collider))
-				{
-					contacts.Remove(cp.collider);
-				}
-			}
-		}
-	}
-
 	void OnCollisionExit2D(Collision2D col)
 	{
 		foreach(ContactPoint2D cp in col.contacts)
 		{
-			if(contacts.Contains(cp.collider))
+			if(cp.normal.y > 0.1f)
 			{
-				contacts.Remove(cp.collider);
+				_groundedCount--;
 			}
 		}
 	}
 
 	void Flip()
 	{
+
 		Vector2 newScale = gameObject.transform.localScale;
 
 		facingRight = !facingRight;
+
+		Debug.Log (facingRight);
 		
 		newScale.x *= -1;
 		
-		gameObject.transform.localScale = newScale;
+		transform.localScale = newScale;
 	}
 
 }

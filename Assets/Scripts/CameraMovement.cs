@@ -33,7 +33,7 @@ public class CameraMovement : MonoBehaviour {
 		originalCameraSize = GetComponentInChildren<Camera>().orthographicSize;
 
 
-		Debug.Log (GetComponentInChildren<Camera>() );
+		//Debug.Log (GetComponentInChildren<Camera>() );
 		/*foreach( Camera c in GetComponentsInChildren<Camera>() )
 		{
 			float newScale = c.orthographicSize;
@@ -68,7 +68,7 @@ public class CameraMovement : MonoBehaviour {
 			//playerGradual.x = Mathf.MoveTowards(playerCurrent.x, playerTargetSize.x, Time.deltaTime);
 			//playerGradual.y = Mathf.MoveTowards(playerCurrent.y, playerTargetSize.y, Time.deltaTime);
 			
-			Debug.Log (playerGradual);
+			//Debug.Log (playerGradual);
 			
 			player.transform.localScale = playerGradual;
 		}
