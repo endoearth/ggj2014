@@ -61,7 +61,7 @@ public class PlayerControl : MonoBehaviour
 			forwardAmt += Input.GetAxis("Horizontal");
 		}
 		
-		if(Input.GetButtonDown("Jump"))
+		if(Input.GetButtonDown("Jump") && grounded)
 		{
 			jump = true;
 		}
