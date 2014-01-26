@@ -38,6 +38,11 @@ public class Enemy : MonoBehaviour
 		}
 	}
 
+	void Enable()
+	{
+		enabled = true;
+	}
+
 	void OnCollisionEnter2D(Collision2D col)
 	{
 		for(int i=0;i<col.contacts.Length;i++)
@@ -60,11 +65,18 @@ public class Enemy : MonoBehaviour
 			{
 				if(col.gameObject.tag=="Player")
 				{
-					if(Mathf.Abs(dif.x) > dif.y)
+					if(ShiftObject.currentPerspective==Perspective.Pessimistic)
 					{
-						col.gameObject.SendMessage("Die");
+						//col.gameObject.SendMessage("Die");
+						col.gameObject.rigidbody2D.velocity = new Vector2(Mathf.Sign(dif.x)*12f,2f);
 					}
-				}
+					else
+					{
+						enabled = false;
+						Invoke("Enable",1f);
+						rigidbody2D.velocity = new Vector2(-Mathf.Sign(dif.x)*12f,2f);
+					}
+			}
 			}
 			else 
 			{
@@ -72,9 +84,9 @@ public class Enemy : MonoBehaviour
 				{
 					if(ShiftObject.currentPerspective==Perspective.Optimistic)
 					{
-						Invoke ("Die",0.02f);
+						//Invoke ("Die",0.02f);
 
-						col.collider.rigidbody2D.velocity += Vector2.up * 5f;
+						//col.collider.rigidbody2D.velocity += Vector2.up * 5f;
 					}
 					else
 					{
@@ -89,7 +101,10 @@ public class Enemy : MonoBehaviour
 	{
 		if(!_changeThisFrame && Mathf.Abs(_origPos-transform.position.x) >= maxDist)
 		{
-			ChangeDirection ();
+			if(transform.position.x-_origPos >= maxDist && _goingRight)
+				ChangeDirection ();
+			else if(transform.position.x-_origPos <= -maxDist && !_goingRight)
+				ChangeDirection();
 		}
 
 		_changeThisFrame = false;
