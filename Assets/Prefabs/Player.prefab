@@ -68,7 +68,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: d1ae657473ed749eb8dde9093bddcb90, type: 2}
   m_CullingMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 1
 --- !u!114 &11400000
@@ -84,8 +84,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 5
   forwardAccel: 20
-  backwardAccel: 40
-  anim: {fileID: 0}
+  backwardAccel: 100
+  anim: {fileID: 9500000}
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1
