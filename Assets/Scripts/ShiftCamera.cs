@@ -134,7 +134,18 @@ public class ShiftCamera : ShiftObject
 	
 	public IEnumerator DoPessimisticAnimation()
 	{
-		yield break;
+		float t = 0f;
+		
+		while(t<1f)
+		{
+			Debug.Log (t);
+			t = Mathf.MoveTowards(t,1f,Time.deltaTime);
+			
+			_currentCam.camera.gameObject.GetComponent<NoiseEffect>().grainIntensityMin = Mathf.Lerp(0.1f,5f,t);
+			_currentCam.camera.gameObject.GetComponent<NoiseEffect>().grainIntensityMax = Mathf.Lerp(0.2f,5f,t);
+			
+			yield return null;
+		}
 	}
 
 }

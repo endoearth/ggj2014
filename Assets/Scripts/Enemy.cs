@@ -35,7 +35,11 @@ public class Enemy : MonoBehaviour
 	{
 		Vector2 norm = col.contacts[0].normal;
 
-		if(Mathf.Abs (norm.x) > 0.1f)
+		Vector2 point = col.contacts[0].point;
+		Vector2 pos = transform.position;
+		Vector2 dif = point - pos;
+
+		if(Mathf.Abs (norm.x) > 0.1f && dif.y > Mathf.Abs(dif.x))
 		{
 			if(col.gameObject.tag=="Player")
 			{
@@ -44,15 +48,20 @@ public class Enemy : MonoBehaviour
 			else
 			{
 				ChangeDirection();
+				Update ();
+				transform.position += rigidbody2D.velocity.x * Vector3.right * Time.deltaTime;
 			}
 		}
-		else if(norm.y<-0.1f)
+		else 
 		{
-			Invoke ("Die",0.02f);
-
 			if(col.collider.tag=="Player")
 			{
-				col.collider.rigidbody2D.velocity += Vector2.up * 5f;
+				if(ShiftObject.currentPerspective==Perspective.Optimistic)
+				{
+					Invoke ("Die",0.02f);
+
+					col.collider.rigidbody2D.velocity += Vector2.up * 5f;
+				}
 			}
 		}
 	}
@@ -65,11 +74,11 @@ public class Enemy : MonoBehaviour
 
 		if(_goingRight)
 		{
-		//	transform.localScale = new Vector3(-1,1,1);
+			transform.localScale = new Vector3(-1,1,1);
 		}
 		else
 		{
-		//	transform.localScale = new Vector3(1,1,1);
+			transform.localScale = new Vector3(1,1,1);
 		}
 	}
 
