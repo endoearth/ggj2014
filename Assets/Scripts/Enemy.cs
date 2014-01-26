@@ -66,7 +66,7 @@ public class Enemy : MonoBehaviour
 	{
 		collider2D.enabled = false;
 		rigidbody2D.fixedAngle = false;
-		rigidbody2D.AddTorque(50f);
+		rigidbody2D.AddTorque(60f/Time.deltaTime);
 		Destroy (gameObject,3f);
 	}
 
