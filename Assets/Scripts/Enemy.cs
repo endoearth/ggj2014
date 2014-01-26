@@ -122,11 +122,11 @@ public class Enemy : MonoBehaviour
 
 		if(_goingRight)
 		{
-			transform.localScale = new Vector3(-1,1,1);
+			transform.localScale = new Vector3(1,1,1);
 		}
 		else
 		{
-			transform.localScale = new Vector3(1,1,1);
+			transform.localScale = new Vector3(-1,1,1);
 		}
 
 		Update ();
