@@ -6,10 +6,14 @@ public class Enemy : MonoBehaviour
 	public float speed = 2f;
 	public bool startLeft = false;
 
+	public float maxDist = 5f;
+
 
 	private bool _goingRight = true;
 
+	private bool _changeThisFrame = false;
 
+	private float _origPos = 0f;
 
 	void Awake()
 	{
@@ -17,7 +21,10 @@ public class Enemy : MonoBehaviour
 		{
 			_goingRight = false;
 		}
+
+		_origPos = transform.position.x;
 	}
+
 
 	void Update()
 	{
@@ -31,45 +38,86 @@ public class Enemy : MonoBehaviour
 		}
 	}
 
+	void Enable()
+	{
+		enabled = true;
+	}
+
 	void OnCollisionEnter2D(Collision2D col)
 	{
-		Vector2 norm = col.contacts[0].normal;
-
-		Vector2 point = col.contacts[0].point;
-		Vector2 pos = transform.position;
-		Vector2 dif = point - pos;
-
-		if(Mathf.Abs (norm.x) > 0.1f && dif.y > Mathf.Abs(dif.x))
+		for(int i=0;i<col.contacts.Length;i++)
 		{
-			if(col.gameObject.tag=="Player")
+			Vector2 norm = col.contacts[i].normal;
+
+			Vector2 point = col.contacts[i].point;
+			Vector2 pos = transform.position;
+			Vector2 dif = point - pos;
+			
+			if(Mathf.Abs (norm.x) > 0.1f)
 			{
-				col.gameObject.SendMessage("Die");
-			}
-			else
-			{
-				ChangeDirection();
-				Update ();
-				transform.position += rigidbody2D.velocity.x * Vector3.right * Time.deltaTime;
-			}
-		}
-		else 
-		{
-			if(col.collider.tag=="Player")
-			{
-				if(ShiftObject.currentPerspective==Perspective.Optimistic)
+				if(col.gameObject.tag!="Player")
 				{
-					Invoke ("Die",0.02f);
+					ChangeDirection();
+				}
+			}
 
-					col.collider.rigidbody2D.velocity += Vector2.up * 5f;
+			if(Mathf.Abs(dif.x) > dif.y+0.1f)
+			{
+				if(col.gameObject.tag=="Player")
+				{
+					if(ShiftObject.currentPerspective==Perspective.Pessimistic)
+					{
+						//col.gameObject.SendMessage("Die");
+						col.gameObject.rigidbody2D.velocity = new Vector2(Mathf.Sign(dif.x)*12f,2f);
+					}
+					else
+					{
+						enabled = false;
+						Invoke("Enable",1f);
+						rigidbody2D.velocity = new Vector2(-Mathf.Sign(dif.x)*12f,2f);
+					}
+			}
+			}
+			else 
+			{
+				if(col.collider.tag=="Player")
+				{
+					if(ShiftObject.currentPerspective==Perspective.Optimistic)
+					{
+						//Invoke ("Die",0.02f);
+
+						//col.collider.rigidbody2D.velocity += Vector2.up * 5f;
+					}
+					else
+					{
+
+					}
 				}
 			}
 		}
 	}
 
+	void LateUpdate()
+	{
+		if(!_changeThisFrame && Mathf.Abs(_origPos-transform.position.x) >= maxDist)
+		{
+			if(transform.position.x-_origPos >= maxDist && _goingRight)
+				ChangeDirection ();
+			else if(transform.position.x-_origPos <= -maxDist && !_goingRight)
+				ChangeDirection();
+		}
 
+		_changeThisFrame = false;
+	}
 
 	void ChangeDirection()
 	{
+		if(_changeThisFrame)
+		{
+			return;
+		}
+
+		_changeThisFrame = true;
 		_goingRight = !_goingRight;
 
 		if(_goingRight)
@@ -80,11 +128,17 @@ public class Enemy : MonoBehaviour
 		{
 			transform.localScale = new Vector3(1,1,1);
 		}
+
+		Update ();
+		transform.position += rigidbody2D.velocity.x * Vector3.right * Time.deltaTime;
 	}
 
 	void Die()
 	{
-		collider2D.enabled = false;
+		foreach(Collider2D col in GetComponentsInChildren<Collider2D>())
+		{
+			collider2D.enabled = false;
+		}
 		rigidbody2D.fixedAngle = false;
 		rigidbody2D.AddTorque(60f/Time.deltaTime);
 		Destroy (gameObject,3f);
