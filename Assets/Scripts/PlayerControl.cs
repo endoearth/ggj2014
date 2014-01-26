@@ -99,8 +99,10 @@ public class PlayerControl : MonoBehaviour
 			jump = false;
 			Vector2 _velocity = rigidbody2D.velocity;
 
-			_velocity.y = 7f;
+			//_velocity.y = 7f;
 			rigidbody2D.velocity = _velocity;
+			
+			StartCoroutine(TryJump(10));
 		}
 
 		anim.SetBool("jumping", jumping);
@@ -168,19 +170,19 @@ public class PlayerControl : MonoBehaviour
 		}*/
 	}
 
-	/*private IEnumerator TryJump(int frames)
+	private IEnumerator TryJump(int frames)
 	{
 		while(frames > 0)
 		{
 			if(grounded)
 			{
-				rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 7f);
+				rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 9f);
 				yield break;
 			}
 			frames--;
 			yield return null;
 		}
-	}*/
+	}
 	/*
 	void OnCollisionEnter2D(Collision2D col)
 	{
@@ -209,8 +211,6 @@ public class PlayerControl : MonoBehaviour
 		Vector2 newScale = gameObject.transform.localScale;
 
 		facingRight = !facingRight;
-
-		Debug.Log (facingRight);
 		
 		newScale.x *= -1;
 		

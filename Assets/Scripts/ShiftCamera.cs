@@ -122,7 +122,6 @@ public class ShiftCamera : ShiftObject
 
 		while(t<1f)
 		{
-			Debug.Log (t);
 			t = Mathf.MoveTowards(t,1f,Time.deltaTime);
 
 			_currentCam.camera.gameObject.GetComponent<Bloom>().bloomIntensity = Mathf.Lerp(1f,10f,t);
@@ -138,7 +137,6 @@ public class ShiftCamera : ShiftObject
 		
 		while(t<1f)
 		{
-			Debug.Log (t);
 			t = Mathf.MoveTowards(t,1f,Time.deltaTime);
 			
 			_currentCam.camera.gameObject.GetComponent<NoiseEffect>().grainIntensityMin = Mathf.Lerp(0.1f,5f,t);
