@@ -104,5 +104,23 @@ TextureImporter:
         height: 128
       alignment: 0
       pivot: {x: .5, y: .5}
+    - name: terrain-opt_7
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: terrain-opt_8
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: .5, y: .5}
   spritePackingTag: 
   userData: 

@@ -20,7 +20,7 @@ public abstract class ShiftObject : MonoBehaviour
 
 	private static List<ShiftObject> _allObjects = new List<ShiftObject>();
 	
-	private static float _lastTimeSwapped = 0f;
+	private static float _lastTimeSwapped = -100f;
 
 
 	protected List<SwappableObject> _swaps = new List<SwappableObject>();
