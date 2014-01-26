@@ -87,6 +87,9 @@ public class PlayerControl : MonoBehaviour
 			accel *= 0.25f;
 		}
 
+
+		Debug.Log (rigidbody2D.velocity);
+
 		_speed = rigidbody2D.velocity.x;
 
 		//if(grounded || forwardAmt!=0f)
@@ -98,6 +101,8 @@ public class PlayerControl : MonoBehaviour
 		Vector2 movement = new Vector2(_speed,rigidbody2D.velocity.y);
 
 		rigidbody2D.velocity = movement;
+		Debug.Log (rigidbody2D.velocity);
+
 
 		if(jump)
 		{

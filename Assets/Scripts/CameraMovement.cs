@@ -7,7 +7,7 @@ public class CameraMovement : MonoBehaviour {
 
 	private Vector2 targetPosition;
 
-	bool worldChange = false;
+	//bool worldChange = false;
 
 	float targetSize;
 
@@ -98,7 +98,7 @@ public class CameraMovement : MonoBehaviour {
 			//playerGradual.x = Mathf.MoveTowards(playerCurrent.x, playerTargetSize.x, Time.deltaTime);
 			//playerGradual.y = Mathf.MoveTowards(playerCurrent.y, playerTargetSize.y, Time.deltaTime);
 			
-			Debug.Log (playerGradual);
+			//Debug.Log (playerGradual);
 			
 			player.transform.localScale = playerGradual;
 		}
@@ -107,7 +107,7 @@ public class CameraMovement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-		float offsetY;
+	/*	float offsetY;
 
 		if(worldSwitch)
 		{
@@ -115,7 +115,7 @@ public class CameraMovement : MonoBehaviour {
 		
 		} else {
 			offsetY = 2.5f;
-		}
+		}*/
 
 		if(player)
 		{
