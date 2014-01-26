@@ -31,7 +31,7 @@ public class CameraMovement : MonoBehaviour {
 
 	void Awake()
 	{
-		halfSize = GetComponentInChildren<Camera>().orthographicSize * 0.5f;
+		halfSize = GetComponentInChildren<Camera>().orthographicSize * 0.8f;
 		originalCameraSize = GetComponentInChildren<Camera>().orthographicSize;
 
 		playerTargetSize.x = player.transform.localScale.x;// * 0.2f;
