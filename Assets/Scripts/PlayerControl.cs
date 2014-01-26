@@ -26,6 +26,16 @@ public class PlayerControl : MonoBehaviour
 
 	void Update()
 	{
+
+		for(int i=0;i<contacts.Count;i++)
+		{
+			if(contacts[i]==null)
+			{
+				contacts.RemoveAt(i);
+				break;
+			}
+		}
+
 		float forwardAmt = 0f;
 		bool jump = false;
 
@@ -56,6 +66,18 @@ public class PlayerControl : MonoBehaviour
 			jump = true;
 		}
 
+		if(forwardAmt==0f)
+		{
+			forwardAmt += Input.GetAxis("Horizontal");
+		}
+
+		if(Input.GetButtonDown("Jump"))
+		{
+			jump = true;
+		}
+
+
+
 		if(Input.GetKeyDown(KeyCode.Alpha1))
 		{
 			ShiftObject.ShiftAllTo(Perspective.Default);
@@ -72,8 +94,11 @@ public class PlayerControl : MonoBehaviour
 
 		float accel = forwardAccel;
 
-
-		if(Mathf.Sign(_speed)==Mathf.Sign(forwardAmt))
+		if(!grounded)
+		{
+			accel = forwardAccel * 0.25f;
+		}
+		else if(Mathf.Sign(_speed)==Mathf.Sign(forwardAmt))
 		{
 			accel = forwardAccel;
 		}
@@ -82,17 +107,9 @@ public class PlayerControl : MonoBehaviour
 			accel = backwardAccel;
 		}
 
-		if(!grounded)
-		{
-			accel *= 0.25f;
-		}
-
-
-		Debug.Log (rigidbody2D.velocity);
-
 		_speed = rigidbody2D.velocity.x;
 
-		//if(grounded || forwardAmt!=0f)
+		if(grounded || forwardAmt!=0f)
 		{
 			_speed = Mathf.MoveTowards(_speed,forwardAmt*maxSpeed,Time.deltaTime * accel);
 		}
@@ -101,7 +118,6 @@ public class PlayerControl : MonoBehaviour
 		Vector2 movement = new Vector2(_speed,rigidbody2D.velocity.y);
 
 		rigidbody2D.velocity = movement;
-		Debug.Log (rigidbody2D.velocity);
 
 
 		if(jump)
@@ -130,7 +146,7 @@ public class PlayerControl : MonoBehaviour
 	{
 		foreach(ContactPoint2D cp in col.contacts)
 		{
-			if(cp.normal.y > 0.1f)
+			if(cp.normal.y > 0.1f && cp.collider.tag == "Untagged")
 			{
 				if(!contacts.Contains(cp.collider))
 				{
@@ -144,7 +160,7 @@ public class PlayerControl : MonoBehaviour
 	{
 		foreach(ContactPoint2D cp in col.contacts)
 		{
-			if(cp.normal.y <= 0.1f)
+			if(cp.normal.y < 0.1f)
 			{
 				if(contacts.Contains(cp.collider))
 				{
