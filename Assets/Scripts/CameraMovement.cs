@@ -9,14 +9,20 @@ public class CameraMovement : MonoBehaviour {
 
 	//bool worldChange = false;
 
-	float targetSize;
+	float halfSize;
 
 	Vector2 playerTargetSize;
 
-	bool worldSwitch = false;
+	private bool _worldSwitch = false;
 
 	float originalCameraSize;
 
+	float playerOriginalSize;
+
+	public void worldSwitch(bool value_)
+	{
+		_worldSwitch = value_;
+	}
 	// Use this for initialization
 	void Start () 
 	{
@@ -25,23 +31,15 @@ public class CameraMovement : MonoBehaviour {
 
 	void Awake()
 	{
-		targetSize = GetComponentInChildren<Camera>().orthographicSize * 0.5f;
-
-		playerTargetSize.x = player.transform.localScale.x  * 0.5f;//* 0.2f;
-		playerTargetSize.y = player.transform.localScale.y * 0.5f;// * 0.2f;
-
+		halfSize = GetComponentInChildren<Camera>().orthographicSize * 0.5f;
 		originalCameraSize = GetComponentInChildren<Camera>().orthographicSize;
 
+		playerTargetSize.x = player.transform.localScale.x;// * 0.2f;
+		playerTargetSize.y = player.transform.localScale.y;// * 0.2f;
 
-		//Debug.Log (GetComponentInChildren<Camera>() );
-		/*foreach( Camera c in GetComponentsInChildren<Camera>() )
-		{
-			float newScale = c.orthographicSize;
+		// holds a reference to the player original scale value
+		playerOriginalSize = player.transform.localScale.x;
 
-			newScale *= 0.5f;
-
-			c.orthographicSize = newScale;
-		}*/
 	}
 
 	void zoomIn ()
@@ -56,21 +54,23 @@ public class CameraMovement : MonoBehaviour {
 			float speed = 4f;
 			
 			//c.orthographicSize = newScale;
-			float gradual = Mathf.MoveTowards(currentSize, targetSize, Time.deltaTime * speed);
+			float gradual = Mathf.MoveTowards(currentSize, halfSize, Time.deltaTime * speed);
 			
 			cams[i].orthographicSize = gradual;
 			
 			Vector2 playerGradual = new Vector2();
-			float perZoom =  targetSize / gradual;
+			float perZoom =  gradual / originalCameraSize;
 			
-			playerGradual.x = 1f - (playerTargetSize.x * perZoom);
-			playerGradual.y = 1f - (playerTargetSize.y * perZoom);
+			playerGradual.x = (playerTargetSize.x * perZoom);
+			playerGradual.y = (playerTargetSize.y * perZoom);
 			//playerGradual.x = Mathf.MoveTowards(playerCurrent.x, playerTargetSize.x, Time.deltaTime);
 			//playerGradual.y = Mathf.MoveTowards(playerCurrent.y, playerTargetSize.y, Time.deltaTime);
 			
 			//Debug.Log (playerGradual);
-			
-			player.transform.localScale = playerGradual;
+			PlayerControl playerControl = player.GetComponent<PlayerControl>();
+			playerControl.setGlobalZoom(playerGradual.x);
+
+			//Debug.LogWarning(playerControl.globalZoom);
 		}
 	}
 
@@ -78,7 +78,7 @@ public class CameraMovement : MonoBehaviour {
 	{
 		Camera[] cams = GetComponentsInChildren<Camera>(true);
 
-		for(int i =0; i < cams.Length ;i++)
+		for(int i =0; i < cams.Length; i++)
 		{
 			float currentSize = cams[i].orthographicSize;
 			
@@ -91,16 +91,13 @@ public class CameraMovement : MonoBehaviour {
 			cams[i].orthographicSize = gradual;
 			
 			Vector2 playerGradual = new Vector2();
-			float perZoom =  targetSize / gradual;
+			float perZoom =  gradual / (originalCameraSize);
 			
-			playerGradual.x = 1f - (playerTargetSize.x * perZoom);
-			playerGradual.y = 1f - (playerTargetSize.y * perZoom);
-			//playerGradual.x = Mathf.MoveTowards(playerCurrent.x, playerTargetSize.x, Time.deltaTime);
-			//playerGradual.y = Mathf.MoveTowards(playerCurrent.y, playerTargetSize.y, Time.deltaTime);
-			
-			//Debug.Log (playerGradual);
-			
-			//player.transform.localScale = playerGradual;
+			playerGradual.x = (playerOriginalSize * perZoom);
+			playerGradual.y = (playerOriginalSize * perZoom);
+
+			PlayerControl playerControl = player.GetComponent<PlayerControl>();
+			playerControl.setGlobalZoom(playerGradual.x);
 		}
 	}
 	
@@ -127,23 +124,16 @@ public class CameraMovement : MonoBehaviour {
 
 		if(Input.GetKeyDown(KeyCode.X))
 		{
-			worldSwitch = !worldSwitch;
+			_worldSwitch = !_worldSwitch;
 		}
 
-		if(worldSwitch)
+		if(_worldSwitch)
 		{
 			zoomIn();
 		} else {
 			zoomOut();
 		}
 
-		//Debug.Log(perZoom);
-
-		//Vector2 playerCurrent = player.transform.localScale * percentageZoomed;
-		//playerGradual.x = Mathf.MoveTowards(playerCurrent.x, playerTargetSize.x, Time.deltaTime);
-		//playerGradual.y = Mathf.MoveTowards(playerCurrent.y, playerTargetSize.y, Time.deltaTime);
-		
-		//foreach( Camera c in GetComponentsInChildren<Camera>() )
 		Camera[] cams = GetComponentsInChildren<Camera>(true);
 
 		for(int i =0; i < cams.Length ;i++)
@@ -152,8 +142,6 @@ public class CameraMovement : MonoBehaviour {
 			targetPosition.y = Merge(cams[i].transform.position.y,  player.transform.position.y);
 
 			cams[i].transform.position = targetPosition;
-			//playerGradual.x = Mathf.MoveTowards(playerCurrent.x, playerTargetSize.x, Time.deltaTime);
-			//playerGradual.y = Mathf.MoveTowards(playerCurrent.y, playerTargetSize.y, Time.deltaTime);
 		}
 	}
 
