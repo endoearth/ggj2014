@@ -196,7 +196,7 @@ public class PlayerControl : MonoBehaviour
 		{
 			if(grounded)
 			{
-				rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 9f);
+				rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 7f);
 				yield break;
 			}
 			frames--;
