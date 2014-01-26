@@ -18,6 +18,9 @@ public class PlayerControl : MonoBehaviour
 	public LayerMask floorType;
 
 	private bool jumping;
+	public float globalZoom;
+
+	public CameraMovement cameraController;
 
 	/*public bool grounded
 	{
@@ -34,10 +37,25 @@ public class PlayerControl : MonoBehaviour
 		onGroundCheck = GetComponent<Transform>();
 	}
 
+
+	public void setGlobalZoom(float value_)
+	{
+		globalZoom =  facingRight ? value_ : value_*-1;
+
+		Vector2 myScale = transform.localScale;
+
+		myScale.x = globalZoom;
+		myScale.y = value_;
+
+		transform.localScale = myScale;
+	}
+
 	void Update()
 	{
 		float forwardAmt = 0f;
 		bool jump = false;
+
+		//Debug.Log ( transform.localScale);
 
 		anim.SetFloat("xSpeed", Mathf.Abs(rigidbody2D.velocity.x));
 		anim.SetFloat("ySpeed", Mathf.Abs(rigidbody2D.velocity.y));
@@ -120,14 +138,16 @@ public class PlayerControl : MonoBehaviour
 			ShiftObject.ShiftAllTo(Perspective.Optimistic);
 		}
 
-		if(Input.GetButtonDown("change"))
+		if(Input.GetButtonDown("change") || Input.GetKeyDown(KeyCode.X))
 		{
 
 			if(ShiftObject.currentPerspective == Perspective.Optimistic)
 			{
+				cameraController.worldSwitch(false);
 				ShiftObject.ShiftAllTo(Perspective.Pessimistic);
 			} else if(ShiftObject.currentPerspective == Perspective.Pessimistic)
 			{
+				cameraController.worldSwitch(true);
 				ShiftObject.ShiftAllTo(Perspective.Optimistic);
 			} else {
 				ShiftObject.ShiftAllTo(Perspective.Pessimistic);
@@ -212,9 +232,10 @@ public class PlayerControl : MonoBehaviour
 
 		facingRight = !facingRight;
 		
-		newScale.x *= -1;
+		newScale.x = globalZoom * -1;
+		//newScale.y = globalZoom;
 		
-		transform.localScale = newScale;
+		gameObject.transform.localScale = newScale;
 	}
 
 }
