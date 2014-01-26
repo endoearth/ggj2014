@@ -56,6 +56,17 @@ public class PlayerControl : MonoBehaviour
 			jump = true;
 		}
 
+		if(forwardAmt==0f)
+		{
+			forwardAmt += Input.GetAxis("Horizontal");
+		}
+		
+		if(Input.GetButtonDown("Jump"))
+		{
+			jump = true;
+		}
+
+
 		if(Input.GetKeyDown(KeyCode.Alpha1))
 		{
 			ShiftObject.ShiftAllTo(Perspective.Default);
