@@ -8,8 +8,11 @@ public class Spawner : MonoBehaviour
 
 	IEnumerator Start ()
 	{
-		Instantiate (prefab,transform.position,transform.rotation);
-		yield return new WaitForSeconds(interval);
+		while(true)
+		{
+			Instantiate (prefab,transform.position,transform.rotation);
+			yield return new WaitForSeconds(interval);
+		}
 	}
 
 }
