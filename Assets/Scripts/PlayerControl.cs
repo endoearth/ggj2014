@@ -12,16 +12,26 @@ public class PlayerControl : MonoBehaviour
 	private bool facingRight = true;
 	
 	private int _groundedCount = 0;
-	public bool grounded
+
+
+	private Transform onGroundCheck;
+	public LayerMask floorType;
+
+	private bool jumping;
+
+	/*public bool grounded
 	{
 		get { return _groundedCount > 0; }
-	}
+	}*/
+
+	private bool grounded;
 
 	public Animator anim;
 
 	void Awake()
 	{
 		anim = GetComponent<Animator>();
+		onGroundCheck = GetComponent<Transform>();
 	}
 
 	void Update()
@@ -30,10 +40,25 @@ public class PlayerControl : MonoBehaviour
 		bool jump = false;
 
 		anim.SetFloat("xSpeed", Mathf.Abs(rigidbody2D.velocity.x));
+		anim.SetFloat("ySpeed", Mathf.Abs(rigidbody2D.velocity.y));
 
-		float xVelocity =  rigidbody2D.velocity.x;
+		grounded = Physics2D.OverlapCircle(onGroundCheck.position, 0.2f, this.floorType);
+		Collider2D[] floorArray =  Physics2D.OverlapAreaAll(new Vector2 (transform.position.x, transform.position.y), new Vector2(transform.position.x, transform.position.y + 0.2f) );
+		
+		foreach( Collider2D myCollider in floorArray)
+		{
+			if(myCollider.tag == "Floor")// Debug.LogWarning("Floro Touching");
+			{
+				grounded = true;
+				jumping = true;
+			}
+		}
 
-		//bool fliped = false;
+		if(grounded && jumping) jumping = false;
+
+		anim.SetBool("onGround", grounded);
+
+		float xVelocity = rigidbody2D.velocity.x;
 
 		if(xVelocity < 0 && facingRight)
 		{
@@ -51,7 +76,7 @@ public class PlayerControl : MonoBehaviour
 		{
 			forwardAmt += 1f;
 		}
-		if(Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space))
+		if(Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space) && grounded)
 		{
 			jump = true;
 		}
@@ -67,6 +92,19 @@ public class PlayerControl : MonoBehaviour
 		}
 
 
+		if(jump) 
+		{
+			jumping = true;
+
+			jump = false;
+			Vector2 _velocity = rigidbody2D.velocity;
+
+			_velocity.y = 7f;
+			rigidbody2D.velocity = _velocity;
+		}
+
+		anim.SetBool("jumping", jumping);
+		
 		if(Input.GetKeyDown(KeyCode.Alpha1))
 		{
 			ShiftObject.ShiftAllTo(Perspective.Default);
@@ -110,13 +148,13 @@ public class PlayerControl : MonoBehaviour
 
 		rigidbody2D.velocity = movement;
 
-		if(jump)
+		/*if(jump)
 		{
 			StartCoroutine(TryJump(10));
-		}
+		}*/
 	}
 
-	private IEnumerator TryJump(int frames)
+	/*private IEnumerator TryJump(int frames)
 	{
 		while(frames > 0)
 		{
@@ -128,8 +166,8 @@ public class PlayerControl : MonoBehaviour
 			frames--;
 			yield return null;
 		}
-	}
-
+	}*/
+	/*
 	void OnCollisionEnter2D(Collision2D col)
 	{
 		foreach(ContactPoint2D cp in col.contacts)
@@ -149,7 +187,7 @@ public class PlayerControl : MonoBehaviour
 				_groundedCount--;
 			}
 		}
-	}
+	}*/
 
 	void Flip()
 	{
