@@ -28,6 +28,9 @@ public class Enemy : MonoBehaviour
 
 	void Update()
 	{
+		if(Mathf.Abs(rigidbody2D.velocity.x)<0.1f)
+			ChangeDirection();
+
 		if(_goingRight)
 		{
 			rigidbody2D.velocity = Vector2.right*speed + Vector2.up*rigidbody2D.velocity.y;
@@ -41,6 +44,7 @@ public class Enemy : MonoBehaviour
 	void Enable()
 	{
 		enabled = true;
+		_origPos = transform.position.x;
 	}
 
 	void OnCollisionEnter2D(Collision2D col)
@@ -73,7 +77,8 @@ public class Enemy : MonoBehaviour
 					else
 					{
 						enabled = false;
-						Invoke("Enable",1f);
+						CancelInvoke("Enable");
+						Invoke("Enable",3f);
 						rigidbody2D.velocity = new Vector2(-Mathf.Sign(dif.x)*12f,2f);
 					}
 			}

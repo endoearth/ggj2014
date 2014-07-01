@@ -39,7 +39,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 100000, guid: 1e03f0954672f45ca866c5ed3dcc23b4, type: 2}
-  interval: 3
+  interval: 5
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

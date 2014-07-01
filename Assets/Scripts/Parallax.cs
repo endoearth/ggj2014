@@ -33,7 +33,7 @@ public class Parallax : MonoBehaviour {
 		cameraTransform = mainCamera.transform;
 		spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
 
-		initialX = 0;
+		initialX = -10;
 		
 		lastCell = mainCamera.transform.position.x / advanceAmount;
 	}

@@ -13,6 +13,8 @@ public class PlayerControl : MonoBehaviour
 	
 	private int _groundedCount = 0;
 
+	public static PlayerControl main;
+
 
 	private Transform onGroundCheck;
 	public LayerMask floorType;
@@ -33,6 +35,7 @@ public class PlayerControl : MonoBehaviour
 
 	void Awake()
 	{
+		main = this;
 		anim = GetComponent<Animator>();
 		onGroundCheck = GetComponent<Transform>();
 	}
@@ -127,15 +130,15 @@ public class PlayerControl : MonoBehaviour
 		
 		if(Input.GetKeyDown(KeyCode.Alpha1))
 		{
-			ShiftObject.ShiftAllTo(Perspective.Default);
+		//	ShiftObject.ShiftAllTo(Perspective.Default);
 		}
 		if(Input.GetKeyDown(KeyCode.Alpha2))
 		{
-			ShiftObject.ShiftAllTo(Perspective.Pessimistic);
+		//	ShiftObject.ShiftAllTo(Perspective.Pessimistic);
 		}
 		if(Input.GetKeyDown(KeyCode.Alpha3))
 		{
-			ShiftObject.ShiftAllTo(Perspective.Optimistic);
+		//	ShiftObject.ShiftAllTo(Perspective.Optimistic);
 		}
 
 		if(Input.GetButtonDown("change") || Input.GetKeyDown(KeyCode.X))
@@ -156,9 +159,12 @@ public class PlayerControl : MonoBehaviour
 
 
 		float accel = forwardAccel;
-
-
-		if(Mathf.Sign(_speed)==Mathf.Sign(forwardAmt))
+		
+		if(!grounded)
+		{
+			accel = forwardAccel * 0.4f;
+		}
+		else if(Mathf.Sign(_speed)==Mathf.Sign(forwardAmt))
 		{
 			accel = forwardAccel;
 		}
@@ -167,10 +173,6 @@ public class PlayerControl : MonoBehaviour
 			accel = backwardAccel;
 		}
 
-		if(!grounded)
-		{
-			accel *= 0.25f;
-		}
 
 		_speed = rigidbody2D.velocity.x;
 
@@ -196,7 +198,7 @@ public class PlayerControl : MonoBehaviour
 		{
 			if(grounded)
 			{
-				rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 7f);
+				rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 8f);
 				yield break;
 			}
 			frames--;

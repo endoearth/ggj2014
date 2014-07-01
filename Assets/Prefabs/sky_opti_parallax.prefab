@@ -39,7 +39,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -16.5069923, y: 10.2225552, z: 0}
+  m_LocalPosition: {x: -6.93978119, y: -62.4992447, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400002}
@@ -69,7 +69,7 @@ MonoBehaviour:
   parallax: 0
   offsetFactor: 1
   advanceAmount: 24
-  screenOffsetY: -1
+  screenOffsetY: 3
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1
