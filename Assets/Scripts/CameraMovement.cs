@@ -122,10 +122,10 @@ public class CameraMovement : MonoBehaviour {
 		//float perZoom;
 		//Vector2 playerGradual;
 
-		if(Input.GetKeyDown(KeyCode.X))
-		{
-			_worldSwitch = !_worldSwitch;
-		}
+		//if(Input.GetKeyDown(KeyCode.X))
+		//{
+		//	_worldSwitch = !_worldSwitch;
+		//}
 
 		if(_worldSwitch)
 		{

@@ -28,16 +28,16 @@ public class Enemy : MonoBehaviour
 
 	void Update()
 	{
-		if(Mathf.Abs(rigidbody2D.velocity.x)<0.1f)
+		if(Mathf.Abs(GetComponent<Rigidbody2D>().velocity.x)<0.1f)
 			ChangeDirection();
 
 		if(_goingRight)
 		{
-			rigidbody2D.velocity = Vector2.right*speed + Vector2.up*rigidbody2D.velocity.y;
+			GetComponent<Rigidbody2D>().velocity = Vector2.right*speed + Vector2.up*GetComponent<Rigidbody2D>().velocity.y;
 		}
 		else
 		{
-			rigidbody2D.velocity = -Vector2.right*speed + Vector2.up*rigidbody2D.velocity.y;
+			GetComponent<Rigidbody2D>().velocity = -Vector2.right*speed + Vector2.up*GetComponent<Rigidbody2D>().velocity.y;
 		}
 	}
 
@@ -72,14 +72,14 @@ public class Enemy : MonoBehaviour
 					if(ShiftObject.currentPerspective==Perspective.Pessimistic)
 					{
 						//col.gameObject.SendMessage("Die");
-						col.gameObject.rigidbody2D.velocity = new Vector2(Mathf.Sign(dif.x)*12f,2f);
+						col.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Sign(dif.x)*12f,2f);
 					}
 					else
 					{
 						enabled = false;
 						CancelInvoke("Enable");
 						Invoke("Enable",3f);
-						rigidbody2D.velocity = new Vector2(-Mathf.Sign(dif.x)*12f,2f);
+						GetComponent<Rigidbody2D>().velocity = new Vector2(-Mathf.Sign(dif.x)*12f,2f);
 					}
 			}
 			}
@@ -135,17 +135,18 @@ public class Enemy : MonoBehaviour
 		}
 
 		Update ();
-		transform.position += rigidbody2D.velocity.x * Vector3.right * Time.deltaTime;
+		transform.position += GetComponent<Rigidbody2D>().velocity.x * Vector3.right * Time.deltaTime;
 	}
 
 	void Die()
-	{
+    {
+        GetComponent<Collider2D>().enabled = false;
 		foreach(Collider2D col in GetComponentsInChildren<Collider2D>())
 		{
-			collider2D.enabled = false;
+			col.enabled = false;
 		}
-		rigidbody2D.fixedAngle = false;
-		rigidbody2D.AddTorque(60f/Time.deltaTime);
+		GetComponent<Rigidbody2D>().fixedAngle = false;
+		GetComponent<Rigidbody2D>().AddTorque(60f/Time.deltaTime);
 		Destroy (gameObject,3f);
 	}
 

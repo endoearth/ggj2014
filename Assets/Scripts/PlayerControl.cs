@@ -40,6 +40,7 @@ public class PlayerControl : MonoBehaviour
 		onGroundCheck = GetComponent<Transform>();
 	}
 
+    private float timeLastChange = 0f;
 
 	public void setGlobalZoom(float value_)
 	{
@@ -60,11 +61,11 @@ public class PlayerControl : MonoBehaviour
 
 		//Debug.Log ( transform.localScale);
 
-		anim.SetFloat("xSpeed", Mathf.Abs(rigidbody2D.velocity.x));
-		anim.SetFloat("ySpeed", Mathf.Abs(rigidbody2D.velocity.y));
+		anim.SetFloat("xSpeed", Mathf.Abs(GetComponent<Rigidbody2D>().velocity.x));
+		anim.SetFloat("ySpeed", Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y));
 
-		grounded = Physics2D.OverlapCircle(onGroundCheck.position, 0.2f, this.floorType);
-		Collider2D[] floorArray =  Physics2D.OverlapAreaAll(new Vector2 (transform.position.x, transform.position.y), new Vector2(transform.position.x, transform.position.y + 0.2f) );
+		grounded = Physics2D.OverlapCircle(onGroundCheck.position, 0.42f, this.floorType);
+		Collider2D[] floorArray =  Physics2D.OverlapAreaAll(new Vector2 (transform.position.x - 0.1f, transform.position.y - 0.2f), new Vector2(transform.position.x + 0.1f, transform.position.y + 0.2f) );
 		
 		foreach( Collider2D myCollider in floorArray)
 		{
@@ -79,7 +80,7 @@ public class PlayerControl : MonoBehaviour
 
 		anim.SetBool("onGround", grounded);
 
-		float xVelocity = rigidbody2D.velocity.x;
+		float xVelocity = GetComponent<Rigidbody2D>().velocity.x;
 
 		if(xVelocity < 0 && facingRight)
 		{
@@ -97,7 +98,7 @@ public class PlayerControl : MonoBehaviour
 		{
 			forwardAmt += 1f;
 		}
-		if(Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space) && grounded)
+		if(Input.GetKeyDown (KeyCode.UpArrow) && grounded)
 		{
 			jump = true;
 		}
@@ -118,10 +119,10 @@ public class PlayerControl : MonoBehaviour
 			jumping = true;
 
 			jump = false;
-			Vector2 _velocity = rigidbody2D.velocity;
+			Vector2 _velocity = GetComponent<Rigidbody2D>().velocity;
 
 			//_velocity.y = 7f;
-			rigidbody2D.velocity = _velocity;
+			GetComponent<Rigidbody2D>().velocity = _velocity;
 			
 			StartCoroutine(TryJump(10));
 		}
@@ -141,21 +142,32 @@ public class PlayerControl : MonoBehaviour
 		//	ShiftObject.ShiftAllTo(Perspective.Optimistic);
 		}
 
-		if(Input.GetButtonDown("change") || Input.GetKeyDown(KeyCode.X))
+		if(Input.GetButtonDown("change") || Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.Space))
 		{
-
-			if(ShiftObject.currentPerspective == Perspective.Optimistic)
-			{
-				cameraController.worldSwitch(false);
-				ShiftObject.ShiftAllTo(Perspective.Pessimistic);
-			} else if(ShiftObject.currentPerspective == Perspective.Pessimistic)
-			{
-				cameraController.worldSwitch(true);
-				ShiftObject.ShiftAllTo(Perspective.Optimistic);
-			} else {
-				ShiftObject.ShiftAllTo(Perspective.Pessimistic);
-			}
+            if (Time.time - timeLastChange > 1f)
+            {
+                timeLastChange = Time.time;
+                if (ShiftObject.currentPerspective == Perspective.Optimistic)
+                {
+                    cameraController.worldSwitch(false);
+                    ShiftObject.ShiftAllTo(Perspective.Pessimistic);
+                }
+                else if (ShiftObject.currentPerspective == Perspective.Pessimistic)
+                {
+                    cameraController.worldSwitch(true);
+                    ShiftObject.ShiftAllTo(Perspective.Optimistic);
+                }
+                else
+                {
+                    ShiftObject.ShiftAllTo(Perspective.Pessimistic);
+                }
+            }
 		}
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
 
 
 		float accel = forwardAccel;
@@ -174,7 +186,7 @@ public class PlayerControl : MonoBehaviour
 		}
 
 
-		_speed = rigidbody2D.velocity.x;
+		_speed = GetComponent<Rigidbody2D>().velocity.x;
 
 		//if(grounded || forwardAmt!=0f)
 		{
@@ -182,9 +194,9 @@ public class PlayerControl : MonoBehaviour
 		}
 
 
-		Vector2 movement = new Vector2(_speed,rigidbody2D.velocity.y);
+		Vector2 movement = new Vector2(_speed,GetComponent<Rigidbody2D>().velocity.y);
 
-		rigidbody2D.velocity = movement;
+		GetComponent<Rigidbody2D>().velocity = movement;
 
 		/*if(jump)
 		{
@@ -198,7 +210,7 @@ public class PlayerControl : MonoBehaviour
 		{
 			if(grounded)
 			{
-				rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 8f);
+				GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 8f);
 				yield break;
 			}
 			frames--;

@@ -7,10 +7,10 @@ public class PlayerVitality : MonoBehaviour
 	public void Die()
 	{
 		GetComponent<PlayerControl>().enabled = false;
-		collider2D.isTrigger = true;
-		rigidbody2D.velocity = new Vector2(-1.5f,12f);
-		rigidbody2D.fixedAngle = false;
-		rigidbody2D.angularVelocity = 100f;
+		GetComponent<Collider2D>().isTrigger = true;
+		GetComponent<Rigidbody2D>().velocity = new Vector2(-1.5f,12f);
+		GetComponent<Rigidbody2D>().fixedAngle = false;
+		GetComponent<Rigidbody2D>().angularVelocity = 100f;
 
 		StartCoroutine(AnimateDeath());
 	}
@@ -20,7 +20,7 @@ public class PlayerVitality : MonoBehaviour
 	{
 		yield return new WaitForSeconds(0.65f);
 
-		rigidbody2D.isKinematic = true;
+		GetComponent<Rigidbody2D>().isKinematic = true;
 
 		ShiftCamera.main.DoDeathAnimation();
 

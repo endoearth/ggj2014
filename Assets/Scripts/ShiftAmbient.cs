@@ -14,8 +14,8 @@ public class ShiftAmbient : ShiftObject
 		{
 			if(on)
 			{
-				((ShiftAmbient)shifter).audio.clip = clip;
-				((ShiftAmbient)shifter).audio.Play();
+				((ShiftAmbient)shifter).GetComponent<AudioSource>().clip = clip;
+				((ShiftAmbient)shifter).GetComponent<AudioSource>().Play();
 			}
 		}
 	}

@@ -75,7 +75,11 @@ public class ShiftCamera : ShiftObject
 		
 		if(current!=null && next!=current)
 		{
-			TransformEffect trEffect = next.gameObject.AddComponent<TransformEffect>();
+			TransformEffect trEffect = next.gameObject.GetComponent<TransformEffect>();
+            if(trEffect == null)
+            {
+                trEffect = next.gameObject.AddComponent<TransformEffect>();
+            }
 			trEffect.shader = Shader.Find("Custom/Transform Effect");
 			RenderTexture renderTex = new RenderTexture(Screen.width,Screen.height,32);
 			trEffect.oldImage = renderTex;
